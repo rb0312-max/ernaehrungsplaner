@@ -74,8 +74,6 @@ export type NutrientKey = (typeof NUTRIENTS)[number]['key'];
 /** Nährwerte je 100 g. Fehlender Schlüssel = unbekannt (nicht 0). */
 export type NutrientValues = Partial<Record<NutrientKey, number>>;
 
-export const NUTRIENT_BY_KEY = Object.fromEntries(NUTRIENTS.map((n) => [n.key, n])) as Record<NutrientKey, NutrientDef>;
-
 /** Nährwerte einer Portion aus Werten je 100 g. */
 export function scale(per100: NutrientValues, grams: number): NutrientValues {
   const out: NutrientValues = {};

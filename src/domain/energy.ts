@@ -4,7 +4,6 @@
  * Die Zu-/Abschläge je Ziel und die Makro-Verteilungen der Ernährungsformen sind
  * übliche Startwerte (keine offiziellen Vorgaben) und pro Profil anpassbar.
  */
-import type { NutrientKey } from './nutrients';
 import { ageOf, dgeProteinPerKg } from './referenceValues';
 import type { Goal, MacroPatternId, MacroSplit, Profile, Sex } from './types';
 
@@ -89,9 +88,4 @@ export function energyTargets(profile: EnergyProfile, now = new Date()): EnergyT
   if (targets.proteinG < targets.dgeProteinMinG)
     targets.warnings.push('Das Proteinziel liegt unter der DGE-Empfehlung für dein Körpergewicht.');
   return targets;
-}
-
-/** Tagesziele der Makros als Nährstoff-Map (für Tracker und Rezeptfilter). */
-export function macroTargetMap(t: EnergyTargets): Partial<Record<NutrientKey, number>> {
-  return { kcal: t.kcal, protein: t.proteinG, fat: t.fatG, carbs: t.carbsG };
 }

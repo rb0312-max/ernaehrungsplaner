@@ -10,6 +10,7 @@ PWA (Vite, React, TypeScript, Dexie). Plan, Architektur, Datenquellen und Meilen
 - `npm run build` Produktions-Build nach `dist/`
 - `python3 tools/build_bls.py <BLS-Excel>` erzeugt `public/data/bls.json` neu
 - `python3 tools/build_conversions.py <Schweizer_Nahrwertdatenbank.xlsx> <USDA-SR-Legacy-Verzeichnis> <masse.json>` erzeugt `src/domain/conversionData.ts` neu (Dichten, Portionsgewichte)
+- `node tools/build_icons.mjs` erzeugt die PNG-Icons in `public/icons/` neu (Playwright/Chromium)
 
 ## Regeln
 

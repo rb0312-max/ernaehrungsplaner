@@ -1,6 +1,6 @@
 # Projektplan Ernährungsplaner
 
-Stand: 15.11.2026. Dieses Dokument ist die Arbeitsgrundlage für alle weiteren Sitzungen.
+Stand: 16.11.2026. Dieses Dokument ist die Arbeitsgrundlage für alle weiteren Sitzungen.
 
 ## 1. Ziel
 
@@ -204,25 +204,26 @@ Befunde und Grenzen aus M6:
 - Listen sind pro Gerät und Profil; Austausch nur über Export/Import (M7) oder „Als Text teilen“.
 - Nicht getestet: echtes Handy, iOS, Teilen-Dialog (`navigator.share`; im Test nur der Zwischenablage-Weg).
 
-### M7 Abschluss (Code erledigt am 15.11.2026; Veröffentlichung wartet auf den Nutzer)
+### M7 Abschluss (erledigt am 16.11.2026, veröffentlicht)
 
 - Sicherung (`/profil/sicherung`, Link unten im Profil): Export aller Tabellen als JSON-Datei `ernaehrung-sicherung-<Datum>.json` (Download), Import mit Vorschau (Datei, Erstelldatum, Anzahl je Tabelle). Auf einem Gerät mit Daten Wahl zwischen „Zusammenführen“ (gleiche IDs werden überschrieben, alles andere bleibt, das aktive Profil des Geräts bleibt) und „Ersetzen“ (vorher alles löschen, mit Rückfrage). Einspielen in einer Transaktion: bei einem Fehler bleibt der alte Stand. Bei der Ersteinrichtung (ohne Profil) steht der Import unter dem Profilformular, damit ein zweites Gerät die Daten übernehmen kann
 - Dateiformat: Kennung `ernaehrung-backup`, Versionsnummer `BACKUP_VERSION` (zählt das Dateiformat, nicht das Dexie-Schema). Neuere Versionen, fremde Dateien, fehlende Schlüsselfelder werden abgelehnt, unbekannte Tabellen ignoriert. Geprüft wird nur die Form der Datensätze, nicht ihr Inhalt. Die alten, ungenutzten `exportAll()`/`importAll()` in `db.ts` sind entfallen
 - Info-Seite (`/profil/info`): Quellen und Lizenzen (BLS mit der Quellenangabe aus `bls.json`, Open Food Facts, DGE, Koch-Wiki, Mengenumrechnung mit Schweizer Nährwertdatenbank, USDA und Koch-Wiki-Maßseite aus `CONVERSION_SOURCES`), Installationshinweis (zeigt, ob die App installiert läuft), Hinweise zur Genauigkeit
 - PNG-Icons (`tools/build_icons.mjs`, rendert aus der Form der `icon.svg` mit Chromium): 192 und 512 px, maskable 512 px (Motiv in der Sicherheitszone), `apple-touch-icon.png` 180 px; Manifest und `index.html` eingebunden, Icon-Pfad in `index.html` relativ (war absolut und hätte unter GitHub Pages im Unterordner gefehlt)
-- Veröffentlichung vorbereitet: `.github/workflows/pages.yml` (Push auf `main` oder von Hand: `npm ci`, Tests, Build, Deploy auf GitHub Pages). Es läuft erst, wenn der Nutzer in den Repository-Einstellungen unter Pages die Quelle „GitHub Actions“ wählt und der Stand auf `main` liegt. Der Branch dieser Sitzung wurde mit dem Branch von M5b/M6 (`busy-goodall-mz3jlf`) zusammengeführt, weil `main` beides noch nicht enthielt
+- Veröffentlicht über GitHub Pages aus dem Repository `rb0312-max/ernaehrungsplaner` (öffentlich). `.github/workflows/pages.yml` läuft bei Push auf `main` und von Hand: `npm ci`, Tests, Build, Deploy. Der Pages-Deploy braucht die Quelle „GitHub Actions“ unter Settings, Pages. Der erste Lauf (Push) schlug fehl, weil Pages noch nicht aktiviert war; der zweite Lauf von Hand war erfolgreich, die Action-Versionen im Workflow funktionieren. `main` hat ein Ruleset (Löschen und Force-Push verboten)
+- Das Repository wurde am 16.11.2026 neu angelegt: ein einziger Startcommit mit dem Stand M0 bis M7. Das frühere, private Repository `rb0312-max/Ernaehrung` enthält die bisherige Historie und ist veraltet
 - Neu: `domain/backup.ts`, `db/backupRepository.ts`, `features/about/`, `tools/build_icons.mjs`, `.github/workflows/pages.yml`
 - 11 neue Tests (zusammen 194 inkl. M5b und M6), Typprüfung und Build laufen fehlerfrei. Browser-Test in 390 px Breite (Playwright, gebauter Stand): ungültige Datei, Import bei Ersteinrichtung, Export (Dateiname, Inhalt), Zusammenführen, Ersetzen, Info-Seite, kein horizontaler Überlauf, keine Konsolenfehler
 
 Befunde und Grenzen aus M7:
 
-- Die Versionen der Actions im Workflow (`checkout@v4`, `setup-node@v4`, `upload-pages-artifact@v3`, `deploy-pages@v4`) stammen aus meinem Wissen, die aktuellen Versionen waren in der Sitzung nicht abrufbar (kein GitHub-Zugriff für `gh`). Der erste Lauf ist ungeprüft; Fehler zeigt der Actions-Reiter
+- Die Versionen der Actions im Workflow (`checkout@v4`, `setup-node@v4`, `upload-pages-artifact@v3`, `deploy-pages@v4`) stammen aus meinem Wissen und wurden nicht gegen die aktuellen Versionen geprüft; sie laufen (Lauf vom 16.11.2026). Die Node-Warnung „punycode deprecated“ im Deploy-Schritt ist eine Meldung der Action, kein Fehler
 - Die Sicherungsdatei ist unverschlüsselt und enthält Gesundheitsdaten (Hinweis steht in der Oberfläche)
 - Es gibt keine Erinnerung an Sicherungen und keinen Zeitstempel der letzten Sicherung
 - Mit „Zusammenführen“ gewinnt bei gleicher ID immer die Datei, auch wenn der lokale Eintrag neuer ist
 - Lizenztexte der Bibliotheken (React, Dexie, zxing usw.) sind nicht in der App aufgeführt und nicht geprüft
-- Das Format der Installationsschritte (Menünamen in Safari und Chrome) ist allgemein beschrieben, nicht auf aktuellen Geräten geprüft
-- Nicht getestet: echtes Handy, iOS (Download und Dateiauswahl, Installation, Icons), Android-Maske der Icons
+- Die Installationsschritte (Menünamen in Safari und Chrome) sind allgemein beschrieben
+- Test am Handy durch den Nutzer am 16.11.2026: „alles funktioniert“ (geprüft nach meiner Liste: Laden, Installation und Icon, Kamera-Scan, Export und Import, Info-Seite). Gerät und Betriebssystem sind nicht festgehalten; Einzelergebnisse und Tests auf weiteren Geräten (iOS und Android getrennt) stehen aus
 
 ## 4. Architektur
 
@@ -363,14 +364,14 @@ Reihenfolge so gewählt, dass nach jedem Schritt etwas Benutzbares entsteht. Jed
 - Aus einem oder mehreren Rezepten mit Portionenzahl, gleiche Zutaten zusammenfassen (Zutaten haben `foodId`, `grams`, Quelltext `name`/`rawMeasure`; offene Zutaten ohne Gramm als Textposten übernehmen)
 - Abhaken, eigene Posten, Liste als Text teilen
 
-**M7 Abschluss (Code erledigt)**
+**M7 Abschluss (erledigt)**
 - Export/Import in der Oberfläche, Seite mit Quellen und Lizenzen (auch Schweizer Nährwertdatenbank mit Quellenvermerk, USDA FoodData Central, Koch-Wiki-Maßseite; Angaben in `CONVERSION_SOURCES`)
 - App-Icons als PNG (iOS), Installationshinweis
 - Veröffentlichung (siehe offene Punkte)
 
 ## 7. Offene Punkte für den Nutzer
 
-1. **Veröffentlichung (offen, Nutzer).** Das Repository `rb0312-max/Ernaehrung` existiert, der Workflow liegt bereit (M7). Nötig: Branch auf `main` zusammenführen und in den Repository-Einstellungen unter Pages die Quelle „GitHub Actions“ wählen. Adresse danach vermutlich `https://rb0312-max.github.io/Ernaehrung/` (aus Kontoname und Repository abgeleitet, nicht geprüft). Kamera und Installation brauchen diese HTTPS-Adresse; danach auf einem echten Handy testen.
+1. **Veröffentlichung (erledigt 16.11.2026).** Siehe M7. Neue Cloud-Sitzungen für das neue Repository brauchen eine passende Umgebung (Abschnitt 9).
 2. **Rezeptquelle.** Entschieden am 15.11.2026: Koch-Wiki zur Laufzeit plus BLS-Gerichte (Abschnitt 5a). Umrechnungen für Löffel, Volumen und Stück: Quellen geprüft (Abschnitt 5b), als M5b eingebaut. USDA-Liste freigegeben; aus der Löffeltabelle des Koch-Wiki nur Mehl und Speisestärke (beides 15.11.2026).
 3. **Geräteabgleich.** Bei lokaler Datenhaltung sieht jedes Gerät nur die eigenen Daten; Austausch nur über Export/Import.
 4. **Personengruppen.** Schwangerschaft, Stillzeit und unter 19 Jahren sind bei den Referenzwerten nicht abgedeckt.
@@ -384,5 +385,5 @@ Reihenfolge so gewählt, dass nach jedem Schritt etwas Benutzbares entsteht. Jed
 ## 9. Arbeitsweise: Modell und Chat
 
 - Ein Chat pro Meilenstein. Nach jedem abgeschlossenen, getesteten und gepushten Meilenstein dem Nutzer ausdrücklich sagen, dass jetzt der Wechsel in einen neuen Chat sinnvoll ist.
-- Cloud-Umgebung: Für dieses Repository gibt es die Umgebung „Ernaehrung“ (erlaubte Hosts: Open Food Facts, TheMealDB, DGE, naehrwertdaten.ch, blsdb.de, de.wikibooks.org, kochwiki.org, rezeptewiki.org, ifi.lmu.de, fdc.nal.usda.gov, mri.bund.de). Neue Sitzungen dort starten, sonst sind die Rezeptquellen gesperrt.
+- Cloud-Umgebung: Für das frühere Repository gab es die Umgebung „Ernaehrung“; für `rb0312-max/ernaehrungsplaner` ist noch zu prüfen, ob sie dort angewendet wird (erlaubte Hosts: Open Food Facts, TheMealDB, DGE, naehrwertdaten.ch, blsdb.de, de.wikibooks.org, kochwiki.org, rezeptewiki.org, ifi.lmu.de, fdc.nal.usda.gov, mri.bund.de). Neue Sitzungen dort starten, sonst sind die Rezeptquellen gesperrt.
 - Modell: M1 bis M4, M6 und M7 sind Oberflächenarbeit nach Plan und für ein günstigeres Modell geeignet. Für M5 und M5b (Rezeptimport, Zutaten-Zuordnung, Quellenwahl, Umrechnungen) und für jede neue Datenquelle, Referenzwerte oder Formeln dem Nutzer ein stärkeres Modell empfehlen.
